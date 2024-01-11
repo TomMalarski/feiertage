@@ -1,0 +1,49 @@
+<h3>Feiertage von {{ year }}</h3>
+
+<ng-container *ngIf="holidays.length > 0">
+    <nz-table #holidayTable [nzData]="holidays">
+        <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let day of holidayTable?.data">
+            <td>{{ day.date }}</td>
+            <td>{{ day.fname }}</td>
+        </tr>
+        </tbody>
+    </nz-table>
+</ng-container>
+
+<nz-row>
+    <nz-col nzSpan="8">
+        <input (keydown.enter)="getFeiertage()" (ngModelChange)="reset()" nz-input nzSize="small" placeholder="Geben sie ein Jahr ein"
+               [width]="30" [(ngModel)]="year">
+    </nz-col>
+
+    <nz-col nzSpan="8">
+        <button [disabled]="isLoading" style="margin-left: 10px;" nz-button nzSize="small" nzType="default"
+                (click)="getFeiertage()">
+            Feiertage Laden
+        </button>
+
+        <button [disabled]="saveIsLoading" style="margin-left: 10px;" nz-button nzSize="small" nzType="primary"
+                (click)="setFeiertage()">
+            Download als JSON
+        </button>
+    </nz-col>
+
+    <nz-col nzSpan="8">
+        <nz-upload
+                (nzChange)="uploadJSON($event)"
+                [nzHeaders]="{ authorization: 'authorization-text' }"
+        >
+            <button nz-button nzSize="small">
+                <span nz-icon nzType="upload"></span>
+                Click to Upload
+            </button>
+        </nz-upload>
+    </nz-col>
+</nz-row>
